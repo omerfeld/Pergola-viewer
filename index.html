@@ -44,7 +44,7 @@ const menuToggle=document.getElementById('menu-toggle');
 let menuOpen=true;
 function setMenuOpen(open){menuOpen=!!open;controlPanel.classList.toggle('menu-hidden',!menuOpen);menuToggle.textContent=menuOpen?'✕ סגור תפריט':'☰ תפריט';menuToggle.setAttribute('aria-expanded',String(menuOpen))}
 function toggleMenu(){setMenuOpen(!menuOpen)}
-const versions={'45':{src:'Pergola_45deg.gltf',label:'תמיכה אלכסונית 45°'},'3posts':{src:'Pergola_3posts.gltf',label:'3 עמודים אחוריים'}};
+const versions={'45':{src:'Pergola_45deg.gltf',label:'תמיכה אלכסונית 45°'},'3posts':{src:'Pergola_3posts_v2.gltf',label:'3 עמודים אחוריים'}};
 const groups={suntuf:['Suntuf_A','Suntuf_B'],laths:['Wood_Laths'],structure:['Wood_Structure'],paving:['Paving'],building:['Dark_Details_A','Dark_Details_B','Brick','Earthenware']};
 const woodMaterials=['Wood_Laths','Wood_Structure'];
 const woodFinishes={natural:{label:'פיין טבעי',tint:[1,1,1,1]},oak:{label:'אלון בינוני',tint:[.82,.67,.48,1]},walnut:{label:'חום אגוזי',tint:[.62,.46,.30,1]},teak:{label:'טיק / דבש',tint:[.92,.74,.45,1]}};
