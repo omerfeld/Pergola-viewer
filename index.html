@@ -29,7 +29,7 @@ button{border:0;border-radius:10px;padding:9px 11px;font-size:14px;background:rg
 <body>
 <div class="title">מודל הפרגולה</div>
 <button id="menu-toggle" class="menu-toggle" type="button" onclick="toggleMenu()" aria-controls="control-panel" aria-expanded="true">✕ סגור תפריט</button>
-<model-viewer id="viewer" src="Pergola_45deg.gltf?v=final6" camera-controls camera-orbit="180deg 75deg 105%" camera-target="auto auto auto" touch-action="pan-y" shadow-intensity="1" exposure="1" interaction-prompt="auto">
+<model-viewer id="viewer" src="Pergola_45deg_v3_labels.gltf" camera-controls camera-orbit="180deg 75deg 105%" camera-target="auto auto auto" touch-action="pan-y" shadow-intensity="1" exposure="1" interaction-prompt="auto">
 </model-viewer>
 <div id="control-panel" class="panel">
 <h3>גרסה</h3>
@@ -97,7 +97,7 @@ function setMenuOpen(open){menuOpen=!!open;controlPanel.classList.toggle('menu-h
 function toggleMenu(){setMenuOpen(!menuOpen)}
 
 const versions={
- '45':{src:'Pergola_45deg.gltf?v=final2',label:'תמיכה אלכסונית 45°'},
+ '45':{src:'Pergola_45deg_v3_labels.gltf',label:'תמיכה אלכסונית 45°'},
  '3posts':{src:'Pergola_3posts_v2.gltf?v=final6',label:'3 עמודים אחוריים'},
  'build':{src:'Pergola_build_v1.gltf?v=final6',label:'אנימציית בנייה'}
 };
