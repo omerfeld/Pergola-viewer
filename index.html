@@ -1,393 +1,71 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>מודל הפרגולה</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מודל הפרגולה — השוואת גרסאות</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#eee}model-viewer{width:100%;height:100%;background:linear-gradient(#f7f7f7,#d9d9d9)}
+.title{position:absolute;z-index:20;top:12px;right:12px;background:rgba(255,255,255,.94);padding:9px 13px;border-radius:11px;box-shadow:0 2px 10px rgba(0,0,0,.16);font-size:17px;font-weight:700;backdrop-filter:blur(5px)}
 
-  <script type="module"
-    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js">
-  </script>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background: #eee;
-    }
-
-    model-viewer {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(#f7f7f7, #d9d9d9);
-    }
-
-    .title {
-      position: absolute;
-      z-index: 20;
-      top: 12px;
-      right: 12px;
-      background: rgba(255,255,255,.93);
-      padding: 9px 13px;
-      border-radius: 11px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.16);
-      font-size: 17px;
-      font-weight: 700;
-      backdrop-filter: blur(5px);
-    }
-
-    .panel {
-      position: absolute;
-      z-index: 20;
-      top: 58px;
-      right: 12px;
-      width: min(300px, calc(100vw - 24px));
-      max-height: calc(100vh - 90px);
-      overflow: auto;
-      background: rgba(255,255,255,.94);
-      padding: 12px;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.18);
-      backdrop-filter: blur(6px);
-    }
-
-    .panel h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-
-    .panel h4 {
-      margin: 13px 0 8px;
-      font-size: 15px;
-      border-top: 1px solid rgba(0,0,0,.12);
-      padding-top: 10px;
-    }
-
-    .layer-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin: 8px 0;
-      font-size: 15px;
-      user-select: none;
-    }
-
-    .layer-row input {
-      width: 19px;
-      height: 19px;
-      margin: 0;
-    }
-
-    .presets, .stain-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      margin-top: 8px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 10px;
-      padding: 9px 11px;
-      font-size: 14px;
-      background: rgba(255,255,255,.97);
-      box-shadow: 0 1px 6px rgba(0,0,0,.17);
-      cursor: pointer;
-    }
-
-    button.active {
-      outline: 2px solid rgba(70,120,255,.45);
-      font-weight: 700;
-    }
-
-    button:active { transform: translateY(1px); }
-
-    .controls {
-      position: absolute;
-      z-index: 20;
-      bottom: max(14px, env(safe-area-inset-bottom));
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      white-space: nowrap;
-    }
-
-    .status {
-      margin-top: 8px;
-      font-size: 12px;
-      opacity: .7;
-      line-height: 1.35;
-    }
-
-    .small-note {
-      margin-top: 8px;
-      font-size: 12px;
-      opacity: .6;
-      line-height: 1.35;
-    }
-
-    @media (max-width: 520px) {
-      .title { font-size: 15px; }
-      .panel {
-        top: 54px;
-        width: 230px;
-        padding: 10px;
-      }
-      .layer-row { font-size: 14px; margin: 6px 0; }
-      .presets, .stain-grid { grid-template-columns: 1fr; }
-      .controls button { padding: 9px 10px; font-size: 13px; }
-    }
-  </style>
-</head>
-
+.menu-toggle{position:absolute;z-index:30;top:12px;left:12px;border:0;border-radius:11px;padding:9px 13px;font-size:14px;font-weight:700;background:rgba(255,255,255,.95);box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(6px);cursor:pointer}
+.menu-toggle:active{transform:translateY(1px)}
+.panel.menu-hidden{display:none}
+.panel{position:absolute;z-index:20;top:58px;right:12px;width:min(310px,calc(100vw - 24px));max-height:calc(100vh - 88px);overflow:auto;background:rgba(255,255,255,.95);padding:12px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.18);backdrop-filter:blur(6px)}
+.panel h3{margin:0 0 8px;font-size:16px}.panel h4{margin:13px 0 8px;font-size:15px;border-top:1px solid rgba(0,0,0,.12);padding-top:10px}.version-grid,.presets,.stain-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.version-grid{margin-bottom:4px}.layer-row{display:flex;align-items:center;gap:9px;margin:8px 0;font-size:15px;user-select:none}.layer-row input{width:19px;height:19px;margin:0}
+button{border:0;border-radius:10px;padding:9px 11px;font-size:14px;background:rgba(255,255,255,.98);box-shadow:0 1px 6px rgba(0,0,0,.17);cursor:pointer}button.active{outline:2px solid rgba(70,120,255,.55);background:rgba(235,242,255,.98);font-weight:700}button:active{transform:translateY(1px)}
+.controls{position:absolute;z-index:20;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;white-space:nowrap}.status{margin-top:9px;font-size:12px;opacity:.7;line-height:1.35}.version-label{margin-top:6px;font-size:12px;opacity:.65;line-height:1.35}
+@media(max-width:520px){.title{font-size:15px}.menu-toggle{top:10px;left:10px;padding:9px 11px;font-size:13px}.panel{top:54px;width:238px;padding:10px}.layer-row{font-size:14px;margin:6px 0}.version-grid,.presets,.stain-grid{grid-template-columns:1fr}.controls button{padding:9px 10px;font-size:13px}}
+</style></head>
 <body>
-  <div class="title">מודל הפרגולה</div>
-
-  <model-viewer
-    id="viewer"
-    src="Pergola_layers.gltf"
-    camera-controls
-    touch-action="pan-y"
-    shadow-intensity="1"
-    exposure="1"
-    interaction-prompt="auto">
-  </model-viewer>
-
-  <div class="panel">
-    <h3>שכבות</h3>
-
-    <label class="layer-row">
-      <input id="layer-suntuf" type="checkbox" checked>
-      <span>סנטף</span>
-    </label>
-
-    <label class="layer-row">
-      <input id="layer-laths" type="checkbox" checked>
-      <span>לאטות 20×40</span>
-    </label>
-
-    <label class="layer-row">
-      <input id="layer-structure" type="checkbox" checked>
-      <span>שלד עץ</span>
-    </label>
-
-    <label class="layer-row">
-      <input id="layer-paving" type="checkbox" checked>
-      <span>ריצוף</span>
-    </label>
-
-    <label class="layer-row">
-      <input id="layer-building" type="checkbox" checked>
-      <span>מבנה / קירות</span>
-    </label>
-
-    <div class="presets">
-      <button onclick="preset('all')">הצג הכל</button>
-      <button onclick="preset('noRoof')">בלי סנטף</button>
-      <button onclick="preset('woodOnly')">עץ בלבד</button>
-      <button onclick="preset('frameOnly')">שלד בלבד</button>
-    </div>
-
-    <h4>גווני עץ</h4>
-    <div class="stain-grid">
-      <button id="stain-natural" onclick="applyWoodFinish('natural')">פיין טבעי</button>
-      <button id="stain-oak" onclick="applyWoodFinish('oak')">אלון בינוני</button>
-      <button id="stain-walnut" onclick="applyWoodFinish('walnut')">חום אגוזי</button>
-      <button id="stain-teak" onclick="applyWoodFinish('teak')">טיק / דבש</button>
-    </div>
-
-    <div id="status" class="status">טוען שכבות…</div>
-    <div class="small-note">הגוונים הם קירוב ויזואלי נוח לצפייה, בהשראת שמות נפוצים של שמני/לכות עץ לפרגולות — לא התאמה מדויקת לקטלוג יצרן מסוים.</div>
-  </div>
-
-  <div class="controls">
-    <button onclick="resetCamera()">איפוס תצוגה</button>
-    <button onclick="fullscreenViewer()">מסך מלא</button>
-  </div>
-
-  <script>
-    const viewer = document.getElementById('viewer');
-
-    const groups = {
-      suntuf: ['Suntuf_A', 'Suntuf_B'],
-      laths: ['Wood_Laths'],
-      structure: ['Wood_Structure'],
-      paving: ['Paving'],
-      building: ['Dark_Details_A', 'Dark_Details_B', 'Brick', 'Earthenware']
-    };
-
-    const woodMaterials = ['Wood_Laths', 'Wood_Structure'];
-
-    const woodFinishes = {
-      natural: { label: 'פיין טבעי', tint: [1.00, 1.00, 1.00, 1.00] },
-      oak:     { label: 'אלון בינוני', tint: [0.82, 0.67, 0.48, 1.00] },
-      walnut:  { label: 'חום אגוזי', tint: [0.62, 0.46, 0.30, 1.00] },
-      teak:    { label: 'טיק / דבש',  tint: [0.92, 0.74, 0.45, 1.00] }
-    };
-
-    const checkboxes = {
-      suntuf: document.getElementById('layer-suntuf'),
-      laths: document.getElementById('layer-laths'),
-      structure: document.getElementById('layer-structure'),
-      paving: document.getElementById('layer-paving'),
-      building: document.getElementById('layer-building')
-    };
-
-    const stainButtons = {
-      natural: document.getElementById('stain-natural'),
-      oak: document.getElementById('stain-oak'),
-      walnut: document.getElementById('stain-walnut'),
-      teak: document.getElementById('stain-teak')
-    };
-
-    const originalMaterialState = new Map();
-    let materialByName = new Map();
-    let currentWoodFinish = 'natural';
-
-    function multiplyRgba(a, b) {
-      return [a[0]*b[0], a[1]*b[1], a[2]*b[2], a[3]*b[3]];
-    }
-
-    async function cacheMaterials() {
-      materialByName = new Map();
-
-      for (const material of viewer.model.materials) {
-        await material.ensureLoaded();
-        materialByName.set(material.name, material);
-
-        const pbr = material.pbrMetallicRoughness;
-        originalMaterialState.set(material.name, {
-          rgba: Array.from(pbr.baseColorFactor),
-          alphaMode: material.getAlphaMode()
-        });
-      }
-
-      document.getElementById('status').textContent =
-        'השכבות מוכנות — אפשר להציג, להסתיר ולשנות גוון עץ.';
-    }
-
-    function getVisibleColor(materialName) {
-      const original = originalMaterialState.get(materialName);
-      if (!original) return [1,1,1,1];
-
-      if (woodMaterials.includes(materialName)) {
-        return multiplyRgba(original.rgba, woodFinishes[currentWoodFinish].tint);
-      }
-      return [...original.rgba];
-    }
-
-    function setMaterialVisible(name, visible) {
-      const material = materialByName.get(name);
-      const original = originalMaterialState.get(name);
-      if (!material || !original) return;
-
-      if (visible) {
-        material.setAlphaMode(original.alphaMode);
-        material.pbrMetallicRoughness.setBaseColorFactor(getVisibleColor(name));
-      } else {
-        const hidden = getVisibleColor(name);
-        hidden[3] = 0;
-        material.setAlphaMode('BLEND');
-        material.pbrMetallicRoughness.setBaseColorFactor(hidden);
-      }
-    }
-
-    function setGroupVisible(groupName, visible) {
-      for (const materialName of groups[groupName]) {
-        setMaterialVisible(materialName, visible);
-      }
-      checkboxes[groupName].checked = visible;
-    }
-
-    function applyCheckboxes() {
-      for (const groupName of Object.keys(groups)) {
-        setGroupVisible(groupName, checkboxes[groupName].checked);
-      }
-    }
-
-    function refreshWoodAppearance() {
-      if (checkboxes.laths.checked) setMaterialVisible('Wood_Laths', true);
-      else setMaterialVisible('Wood_Laths', false);
-
-      if (checkboxes.structure.checked) setMaterialVisible('Wood_Structure', true);
-      else setMaterialVisible('Wood_Structure', false);
-    }
-
-    function applyWoodFinish(finishName) {
-      currentWoodFinish = finishName;
-      for (const [name, btn] of Object.entries(stainButtons)) {
-        btn.classList.toggle('active', name === finishName);
-      }
-      refreshWoodAppearance();
-
-      const finishLabel = woodFinishes[finishName].label;
-      document.getElementById('status').textContent =
-        `גוון העץ הפעיל: ${finishLabel}`;
-    }
-
-    for (const [groupName, checkbox] of Object.entries(checkboxes)) {
-      checkbox.addEventListener('change', () => {
-        setGroupVisible(groupName, checkbox.checked);
-      });
-    }
-
-    function preset(type) {
-      const states = {
-        all: {
-          suntuf: true, laths: true, structure: true,
-          paving: true, building: true
-        },
-        noRoof: {
-          suntuf: false, laths: true, structure: true,
-          paving: true, building: true
-        },
-        woodOnly: {
-          suntuf: false, laths: true, structure: true,
-          paving: false, building: false
-        },
-        frameOnly: {
-          suntuf: false, laths: false, structure: true,
-          paving: false, building: false
-        }
-      };
-
-      const chosen = states[type];
-      for (const [groupName, visible] of Object.entries(chosen)) {
-        setGroupVisible(groupName, visible);
-      }
-    }
-
-    function resetCamera() {
-      viewer.cameraOrbit = 'auto auto auto';
-      viewer.cameraTarget = 'auto auto auto';
-      viewer.fieldOfView = 'auto';
-      viewer.jumpCameraToGoal();
-    }
-
-    function fullscreenViewer() {
-      if (viewer.requestFullscreen) {
-        viewer.requestFullscreen();
-      }
-    }
-
-    viewer.addEventListener('load', async () => {
-      try {
-        await cacheMaterials();
-        applyCheckboxes();
-        applyWoodFinish('natural');
-      } catch (err) {
-        console.error(err);
-        document.getElementById('status').textContent =
-          'המודל נטען, אך אירעה שגיאה באתחול השכבות/הגוונים.';
-      }
-    });
-  </script>
-</body>
-</html>
+<div class="title">מודל הפרגולה</div>
+<button id="menu-toggle" class="menu-toggle" type="button" onclick="toggleMenu()" aria-controls="control-panel" aria-expanded="true">✕ סגור תפריט</button>
+<model-viewer id="viewer" src="Pergola_45deg.gltf" camera-controls touch-action="pan-y" shadow-intensity="1" exposure="1" interaction-prompt="auto"></model-viewer>
+<div id="control-panel" class="panel">
+<h3>גרסה</h3>
+<div class="version-grid"><button id="version-45" class="active" onclick="switchVersion('45')">תמיכה אלכסונית 45°</button><button id="version-3posts" onclick="switchVersion('3posts')">3 עמודים אחוריים</button></div>
+<div id="version-label" class="version-label">מוצגת: תמיכה אלכסונית 45°</div>
+<h4>שכבות</h4>
+<label class="layer-row"><input id="layer-suntuf" type="checkbox" checked><span>סנטף</span></label>
+<label class="layer-row"><input id="layer-laths" type="checkbox" checked><span>לאטות 20×40</span></label>
+<label class="layer-row"><input id="layer-structure" type="checkbox" checked><span>שלד עץ</span></label>
+<label class="layer-row"><input id="layer-paving" type="checkbox" checked><span>ריצוף</span></label>
+<label class="layer-row"><input id="layer-building" type="checkbox" checked><span>מבנה / קירות</span></label>
+<div class="presets"><button onclick="preset('all')">הצג הכל</button><button onclick="preset('noRoof')">בלי סנטף</button><button onclick="preset('woodOnly')">עץ בלבד</button><button onclick="preset('frameOnly')">שלד בלבד</button></div>
+<h4>גווני עץ</h4>
+<div class="stain-grid"><button id="stain-natural" class="active" onclick="applyWoodFinish('natural')">פיין טבעי</button><button id="stain-oak" onclick="applyWoodFinish('oak')">אלון בינוני</button><button id="stain-walnut" onclick="applyWoodFinish('walnut')">חום אגוזי</button><button id="stain-teak" onclick="applyWoodFinish('teak')">טיק / דבש</button></div>
+<div id="status" class="status">טוען מודל…</div></div>
+<div class="controls"><button onclick="resetCamera()">איפוס תצוגה</button><button onclick="fullscreenViewer()">מסך מלא</button></div>
+<script>
+const viewer=document.getElementById('viewer');
+const controlPanel=document.getElementById('control-panel');
+const menuToggle=document.getElementById('menu-toggle');
+let menuOpen=true;
+function setMenuOpen(open){menuOpen=!!open;controlPanel.classList.toggle('menu-hidden',!menuOpen);menuToggle.textContent=menuOpen?'✕ סגור תפריט':'☰ תפריט';menuToggle.setAttribute('aria-expanded',String(menuOpen))}
+function toggleMenu(){setMenuOpen(!menuOpen)}
+const versions={'45':{src:'Pergola_45deg.gltf',label:'תמיכה אלכסונית 45°'},'3posts':{src:'Pergola_3posts.gltf',label:'3 עמודים אחוריים'}};
+const groups={suntuf:['Suntuf_A','Suntuf_B'],laths:['Wood_Laths'],structure:['Wood_Structure'],paving:['Paving'],building:['Dark_Details_A','Dark_Details_B','Brick','Earthenware']};
+const woodMaterials=['Wood_Laths','Wood_Structure'];
+const woodFinishes={natural:{label:'פיין טבעי',tint:[1,1,1,1]},oak:{label:'אלון בינוני',tint:[.82,.67,.48,1]},walnut:{label:'חום אגוזי',tint:[.62,.46,.30,1]},teak:{label:'טיק / דבש',tint:[.92,.74,.45,1]}};
+const checkboxes={suntuf:document.getElementById('layer-suntuf'),laths:document.getElementById('layer-laths'),structure:document.getElementById('layer-structure'),paving:document.getElementById('layer-paving'),building:document.getElementById('layer-building')};
+const versionButtons={'45':document.getElementById('version-45'),'3posts':document.getElementById('version-3posts')};
+const stainButtons={natural:document.getElementById('stain-natural'),oak:document.getElementById('stain-oak'),walnut:document.getElementById('stain-walnut'),teak:document.getElementById('stain-teak')};
+let materialByName=new Map(),originalMaterialState=new Map(),currentVersion='45',currentWoodFinish='natural',pendingCameraState=null;
+function multiplyRgba(a,b){return[a[0]*b[0],a[1]*b[1],a[2]*b[2],a[3]*b[3]]}
+function captureCamera(){try{const o=viewer.getCameraOrbit(),t=viewer.getCameraTarget(),f=viewer.getFieldOfView();return{orbit:`${o.theta}rad ${o.phi}rad ${o.radius}m`,target:`${t.x}m ${t.y}m ${t.z}m`,fov:`${f}deg`}}catch(e){return null}}
+function restoreCamera(s){if(!s)return;viewer.cameraOrbit=s.orbit;viewer.cameraTarget=s.target;viewer.fieldOfView=s.fov;viewer.jumpCameraToGoal()}
+async function cacheMaterials(){materialByName=new Map();originalMaterialState=new Map();for(const m of viewer.model.materials){await m.ensureLoaded();materialByName.set(m.name,m);const p=m.pbrMetallicRoughness;originalMaterialState.set(m.name,{rgba:Array.from(p.baseColorFactor),alphaMode:m.getAlphaMode()})}}
+function getVisibleColor(n){const o=originalMaterialState.get(n);if(!o)return[1,1,1,1];return woodMaterials.includes(n)?multiplyRgba(o.rgba,woodFinishes[currentWoodFinish].tint):[...o.rgba]}
+function setMaterialVisible(n,v){const m=materialByName.get(n),o=originalMaterialState.get(n);if(!m||!o)return;if(v){m.setAlphaMode(o.alphaMode);m.pbrMetallicRoughness.setBaseColorFactor(getVisibleColor(n))}else{const h=getVisibleColor(n);h[3]=0;m.setAlphaMode('BLEND');m.pbrMetallicRoughness.setBaseColorFactor(h)}}
+function setGroupVisible(g,v){for(const n of groups[g])setMaterialVisible(n,v);checkboxes[g].checked=v}
+function applyCurrentState(){for(const g of Object.keys(groups))setGroupVisible(g,checkboxes[g].checked);refreshWoodAppearance()}
+function refreshWoodAppearance(){setMaterialVisible('Wood_Laths',checkboxes.laths.checked);setMaterialVisible('Wood_Structure',checkboxes.structure.checked)}
+function applyWoodFinish(f){currentWoodFinish=f;for(const [n,b] of Object.entries(stainButtons))b.classList.toggle('active',n===f);refreshWoodAppearance();document.getElementById('status').textContent=`גוון העץ הפעיל: ${woodFinishes[f].label}`}
+function switchVersion(v){if(v===currentVersion)return;pendingCameraState=captureCamera();currentVersion=v;for(const[n,b]of Object.entries(versionButtons))b.classList.toggle('active',n===v);document.getElementById('version-label').textContent=`מוצגת: ${versions[v].label}`;document.getElementById('status').textContent='מחליף גרסה…';viewer.src=versions[v].src}
+for(const[g,c]of Object.entries(checkboxes))c.addEventListener('change',()=>setGroupVisible(g,c.checked));
+function preset(t){const s={all:{suntuf:true,laths:true,structure:true,paving:true,building:true},noRoof:{suntuf:false,laths:true,structure:true,paving:true,building:true},woodOnly:{suntuf:false,laths:true,structure:true,paving:false,building:false},frameOnly:{suntuf:false,laths:false,structure:true,paving:false,building:false}}[t];for(const[g,v]of Object.entries(s))setGroupVisible(g,v)}
+function resetCamera(){viewer.cameraOrbit='auto auto auto';viewer.cameraTarget='auto auto auto';viewer.fieldOfView='auto';viewer.jumpCameraToGoal()}
+function fullscreenViewer(){if(viewer.requestFullscreen)viewer.requestFullscreen()}
+viewer.addEventListener('load',async()=>{try{await cacheMaterials();applyCurrentState();if(pendingCameraState){const s=pendingCameraState;pendingCameraState=null;requestAnimationFrame(()=>restoreCamera(s))}document.getElementById('status').textContent=`מוכנה: ${versions[currentVersion].label} · ${woodFinishes[currentWoodFinish].label}`}catch(e){console.error(e);document.getElementById('status').textContent='המודל נטען, אך אירעה שגיאה באתחול השכבות.'}});
+</script></body></html>
